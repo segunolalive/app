@@ -83,6 +83,10 @@ export default {
     values: {
       type: Object,
       default: null
+    },
+    placeholder: {
+      type: String,
+      default: null
     }
   },
   computed: {
@@ -109,7 +113,8 @@ export default {
 
       return {
         ...defaults,
-        ...this.options
+        ...this.options,
+        placeholder: this.placeholder
       };
     }
   },

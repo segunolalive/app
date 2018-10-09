@@ -236,7 +236,8 @@
             :required="option.required"
             :loading="option.loading"
             :options="option.options"
-            :value="options[optionID] || option.default"
+            :placeholder="option.default"
+            :value="options[optionID]"
             :fields="selectedInterfaceInfo.options"
             :values="options"
             @input="$set(options, optionID, $event)" />
