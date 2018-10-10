@@ -11,7 +11,7 @@
         <h1 v-else>{{ resetMode ? $t('reset_password') : $t('sign_in') }}</h1>
 
         <label class="project-switcher">
-          <select v-model="selectedUrl" :disabled="loading">
+          <select v-model="selectedUrl" :disabled="loading" v-if="Object.keys(urls).length > 1 || allowOther">
             <option
               v-for="(name, u) in urls"
               :value="u"
@@ -24,7 +24,7 @@
               value="other"
             >{{ $t('other') }}</option>
           </select>
-          {{ $t('to') }} <span>{{ (urls[url] || $t('choose_project')) }} <i class="material-icons">arrow_drop_down</i></span>
+          {{ $t('to') }} <span>{{ (urls[url] || $t('choose_project')) }} <i v-if="Object.keys(urls).length > 1 || allowOther" class="material-icons">arrow_drop_down</i></span>
         </label>
 
         <div class="material-input" v-if="selectOther">
@@ -236,7 +236,15 @@ export default {
       this.checkUrl();
     }
 
-    const lastUsedURL = this.storeUrl;
+    let lastUsedURL = this.storeUrl;
+
+    // Check if the last used URL is still a valid option before using it
+    if (
+      Object.keys(window.__DirectusConfig__.api).includes(lastUsedURL) === false
+    ) {
+      lastUsedURL = null;
+    }
+
     this.url =
       lastUsedURL || Object.keys(window.__DirectusConfig__.api)[0] || "";
 
